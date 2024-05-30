@@ -1,0 +1,28 @@
+// day 1
+
+1.) Find the Duplicate Number
+slow fast pointer, floyd algorithm to detecct cycle in a linkedlist, tortoise method
+convert array into linkedlist replresentation, proof of working
+2 * slow = fast 
+linkedlist representation is formed by taking index as elements of array 
+to move each unit we nums[x], to move 2 unit nums[nums[x]]
+
+2.) The problem requires us to sort an array of integers representing colors in-place so that objects of the same color are adjacent, with the 
+colors in the order red, white, and blue. We are given that the colors red, white, and blue are represented by the integers 0, 1, and 2 respectively.
+Dutch national flag algorithm
+The idea behind the algorithm is to keep all the 0s before the low pointer, all the 2s after the high pointer, and all the 1s between the low and high
+ pointers. The algorithm moves the mid pointer through the array, comparing the value at each position with 1. If the value is 0, the element is
+  swapped with the element at the low pointer, and the low and mid pointers are incremented. If the value is 2, the element is swapped with 
+  the element at the high pointer, and the high pointer is decremented. If the value is 1, the mid pointer is simply incremented.
+
+The algorithm terminates when the mid pointer crosses the high pointer, indicating that all the elements have been processed and the array is sorted.
+
+3.) Inplace sorting and remove repetition
+Observation
+
+4.) Given an integer array nums and an integer k, return the number of non-empty subarrays that have a sum divisible by k.
+feel When all subarray type question is asked consider index till i and try to consider all subarray before it. in this way
+we will consider all subarray at i = n-1
+
+5.) Find all duplicated in a array
+Modification and reverting method by summing elements with a large number

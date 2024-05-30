@@ -37,7 +37,6 @@ public:
             while(!pq.empty() && (i.first-pq.top().c) > k){
                 pq.pop();
             }
-            
             if(!pq.empty()){
                 cout << pq.top().a << " " << pq.top().b << " " << pq.top().c << "\n";
                 ans = max(ans, pq.top().b+(i.first-pq.top().c)+i.second.back());
