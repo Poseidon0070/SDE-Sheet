@@ -1,11 +1,3 @@
-// In segment tree we divide range into lesser number of nodes(max 2*logn) constructing a tree of height log n, where n is the size of array
-// updating involves going to root of that corresponding index and then upliffting & updating upper nodes simultaneously
-
-// In segment tree we need to think about : 
-// 1.) node structure      -> state
-// 2.) how to merge?       -> transition
-// 3.) Leaf nodes
-
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
@@ -16,6 +8,7 @@ public:
     vector<int> v;
     struct node{
         int prop;
+        int peaks;
         node(){
             this->prop = 0;
         } 
@@ -40,7 +33,9 @@ public:
     }
     void build(int id,int l,int r){
         if(l == r){
-            seg[id] = node(v[l]);
+            // cout << v[l] << "\n";
+            // cout << isPeak(l,v[l]) << "\n";
+            seg[id] = node(isPeak(l,v[l]));
             return ;
         }
         int mid = (l+r) >> 1;
@@ -51,7 +46,8 @@ public:
     void update(int id, int l, int r, int pos, int u){
         if(pos < l || pos > r) return ;
         if(l == r){
-            seg[id] = merge(node(seg[id].prop),node(u));
+            this->v[l] = u;
+            seg[id] = node(isPeak(l,u));
             return ;
         }
         int mid = (l+r) >> 1;
@@ -69,6 +65,9 @@ public:
         int mid = ((l+r) >> 1);
         return merge(query(2*id,l,mid,lq,rq),query(2*id+1,mid+1,r,lq,rq));
     }
+    int isPeak(int x,int val){
+        return ((x != 0 && x != n-1 && val > v[x-1] && val > v[x+1]) ? 1 : 0);
+    }
 };
 
 signed main()
@@ -78,10 +77,29 @@ signed main()
     for(auto &temp:v) cin >> temp;
     SegmentTree seg(n,v);
     seg.build(1,0,n-1);
+    // for (auto &i:seg.seg){
+    //     cout << i.prop << " ";
+    // }cout << "\n";
     for(int i{};i<q;i++){
-        int l,r; cin >> l >> r;
-        l--; r--;
-        cout << seg.query(1,0,n-1,l,r).prop << "\n";
+        int type; 
+        cin >> type;
+        if(type == 2){
+            int pos,u; cin >> pos >> u;
+            seg.update(1,0,n-1,pos,u);
+            if(pos-1 >= 0) seg.update(1,0,n-1,pos-1,seg.v[pos-1]);
+            if(pos+1 < n) seg.update(1,0,n-1,pos+1,seg.v[pos+1]);
+            // for (auto &i:seg.seg){
+            //     cout << i.prop << " ";
+            // }cout << "\n";
+        }else{
+            int l,r; cin >> l >> r;
+            l++; r--;
+            if(l > r) {
+                cout << 0 << " ";
+                continue;
+            }
+            cout << seg.query(1,0,n-1,l,r).prop << " ";
+        }
     }
     return 0;
 }

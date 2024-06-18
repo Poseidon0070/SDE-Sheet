@@ -1,11 +1,3 @@
-// In segment tree we divide range into lesser number of nodes(max 2*logn) constructing a tree of height log n, where n is the size of array
-// updating involves going to root of that corresponding index and then upliffting & updating upper nodes simultaneously
-
-// In segment tree we need to think about : 
-// 1.) node structure      -> state
-// 2.) how to merge?       -> transition
-// 3.) Leaf nodes
-
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
@@ -16,6 +8,7 @@ public:
     vector<int> v;
     struct node{
         int prop;
+        int ind;
         node(){
             this->prop = 0;
         } 
@@ -27,16 +20,16 @@ public:
 
     SegmentTree(int n){
         this->n = n;
-        this->seg.resize(4*n);
+        this->seg.resize(4*n,-1);
     }
     SegmentTree(int n,vector<int> v){
         this->n = n;
-        this->seg.resize(4*n);
+        this->seg.resize(4*n,-1);
         this->v = v;
     }
 
     node merge(node a, node b){
-        return node(a.prop+b.prop);
+        return node(max(a.prop,b.prop));
     }
     void build(int id,int l,int r){
         if(l == r){
@@ -51,7 +44,7 @@ public:
     void update(int id, int l, int r, int pos, int u){
         if(pos < l || pos > r) return ;
         if(l == r){
-            seg[id] = merge(node(seg[id].prop),node(u));
+            seg[id] = node(u);
             return ;
         }
         int mid = (l+r) >> 1;
@@ -59,29 +52,43 @@ public:
         update(2*id+1,mid+1,r,pos,u);
         seg[id] = merge(seg[2*id],seg[2*id+1]);
     }
-    node query(int id,int l,int r,int lq,int rq){
-        if(lq > r || rq < l){
-            return node();
+    int query(int id,int l,int r,int k){
+        if(l == r){
+            seg[id].prop -= k;
+            v[l] -= k;
+            return l+1;
         }
-        if(lq <= l && rq >= r){
-            return seg[id];
-        }
-        int mid = ((l+r) >> 1);
-        return merge(query(2*id,l,mid,lq,rq),query(2*id+1,mid+1,r,lq,rq));
+        int mid = (l+r) >> 1;
+        int ans = 0;
+        if(seg[2*id].prop >= k){
+            ans = query(2*id,l,mid,k);
+        }else if(seg[2*id+1].prop >= k){
+            ans = query(2*id+1,mid+1,r,k);
+        } 
+        seg[id] = merge(seg[2*id], seg[2*id+1]);
+        return ans;
     }
 };
 
 signed main()
 {
-    int n,q; cin >> n >> q;
+    int n,q;
+    cin >> n >> q;
     vector<int> v(n);
     for(auto &temp:v) cin >> temp;
     SegmentTree seg(n,v);
     seg.build(1,0,n-1);
+    // cout << seg.seg[1].prop << "\n";
+    // for (auto &i:seg.seg){
+    //     cout << i.prop << " ";
+    // }cout << "\n";
     for(int i{};i<q;i++){
-        int l,r; cin >> l >> r;
-        l--; r--;
-        cout << seg.query(1,0,n-1,l,r).prop << "\n";
+        int x; cin >> x;
+        if(seg.seg[1].prop < x) {
+            cout << 0 << " ";
+            continue;
+        }
+        cout << seg.query(1,0,n-1,x) << " ";
     }
     return 0;
 }

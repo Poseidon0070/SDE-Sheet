@@ -1,0 +1,1 @@
+{"name":"Local: CSES7","url":"d:\\Vs_Code\\C++\\SDE Sheet\\SegmentTree\\CSES7.cpp","tests":[{"id":1718689819951,"input":"8 5\n3 2 4 1 5 5 2 6\n4 4 7 1 1","output":"3 5 0 1 1"},{"id":1718691618391,"input":"1 1\n2\n3","output":"0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Vs_Code\\C++\\SDE Sheet\\SegmentTree\\CSES7.cpp","group":"local","local":true}

@@ -1,11 +1,3 @@
-// In segment tree we divide range into lesser number of nodes(max 2*logn) constructing a tree of height log n, where n is the size of array
-// updating involves going to root of that corresponding index and then upliffting & updating upper nodes simultaneously
-
-// In segment tree we need to think about : 
-// 1.) node structure      -> state
-// 2.) how to merge?       -> transition
-// 3.) Leaf nodes
-
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
@@ -36,7 +28,7 @@ public:
     }
 
     node merge(node a, node b){
-        return node(a.prop+b.prop);
+        return node(min(a.prop,b.prop));
     }
     void build(int id,int l,int r){
         if(l == r){
@@ -61,7 +53,7 @@ public:
     }
     node query(int id,int l,int r,int lq,int rq){
         if(lq > r || rq < l){
-            return node();
+            return node(LONG_LONG_MAX);
         }
         if(lq <= l && rq >= r){
             return seg[id];
