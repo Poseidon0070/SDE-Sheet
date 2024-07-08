@@ -1,0 +1,13 @@
+// to find cycle in a tree we can use dfs ,
+// use a visited matrix with
+// 0 representing not visited node
+// 1 representing currently processing node
+// 2 already processing node
+// just run a dfs and if a currently processed node it visited again by its neighbouring or children node 
+// then this indicated presence of a cycle
+// kahns algorithms gives a new intuition for dealing with tree problems with concept of indegrees
+// we can also use kahns algo to find cycle in a tree
+
+// to find loges diameter of a tree 
+// finder a node farthest to a random node (say 0th node) in tree and then find farthest node to found node
+// then distance between the tow is the diameter.
