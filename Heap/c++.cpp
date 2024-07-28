@@ -67,8 +67,6 @@ public:
     int isEmpty(){
         return v.size() == 0;
     }
-
-
 };
 
 int main()
